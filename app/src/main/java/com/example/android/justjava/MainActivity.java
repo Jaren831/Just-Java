@@ -28,15 +28,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void increment(View view) {
         quantity += 1;
+        int price = 5;
         displayQuantity(quantity);
+        displayPrice(price * quantity);
+
     }
     public void decrement(View view) {
         quantity -= 1;
-        displayQuantity(quantity);
-    }
-    public void submitOrder(View view) {
         int price = 5;
+        displayQuantity(quantity);
         displayPrice(price * quantity);
+    }
+
+    public void submitOrder(View view) {
+        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+        priceTextView.setText(priceTextView.getText() + "\nThank you!");
+
+
     }
 
 
@@ -44,16 +52,22 @@ public class MainActivity extends AppCompatActivity {
      * This method displays the given quantity value on the screen.
      */
     private void displayQuantity(int number) {
-        TextView quantityTextView = (TextView) findViewById(
-                R.id.quantity_text_view);
+        TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         quantityTextView.setText("" + number);
+    }
+    /**
+     * This method displays the given text on the screen.
+     */
+    private void displayMessage(String message) {
+        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+        priceTextView.setText(message);
     }
     /**
      * This method displays the given price on the screen.
      */
     private void displayPrice(int number) {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+        priceTextView.setText("Total: " + NumberFormat.getCurrencyInstance().format(number));
     }
 
 }
