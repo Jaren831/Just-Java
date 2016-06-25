@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
      */
     int quantity = 2;
     int price = 5;
-
+    String name = "Kaptain Kunal";
 
     /**
      * Increment triggered on plus button. Decrement on minus button. Increase/decrease quantity.
@@ -36,20 +36,30 @@ public class MainActivity extends AppCompatActivity {
     public void increment(View view) {
         quantity += 1;
         displayQuantity(quantity);
-        displayPrice(price * quantity);
+        displayPrice(calculateTotal(quantity, price));
 
     }
     public void decrement(View view) {
         quantity -= 1;
         displayQuantity(quantity);
-        displayPrice(price * quantity);
+        displayPrice(calculateTotal(quantity, price));
     }
+
+    private int calculateTotal(int quantity, int price) {
+        return quantity * price;
+    }
+
     /**
      * Triggers thank you message.
      */
 
     public void submitOrder(View view) {
-        displayMessage(getString(R.string.message_checkout));
+        TextView messageTextView = (TextView) findViewById(R.id.price_text_view);
+        messageTextView.setText(createMessage(name, quantity, calculateTotal(price, quantity), getString(R.string.message_checkout)));
+    }
+    private String createMessage(String name, int quantity, int total, String message) {
+        return "Name: " + name + "\n" + "Quantity: " + quantity + "\n" + "Total: $" + total + "\n" +
+                message;
     }
 
     /**
@@ -58,14 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private void displayQuantity(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         quantityTextView.setText(String.valueOf(number));
-    }
-    /**
-     * This method displays the message on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView messageTextView = (TextView) findViewById(R.id.message_text_view);
-        messageTextView.setText(message);
-
     }
     /**
      * This method displays the desired price on the screen.
