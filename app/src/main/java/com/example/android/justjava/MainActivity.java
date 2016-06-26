@@ -20,42 +20,66 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        displayPrice(calculateTotal(quantity, price));
+        displayQuantity(quantity);
     }
 
-    /**
-     * This method is called when the order button is clicked.
-     */
     /**
      * Global variables
      */
     int quantity = 2;
     int price = 5;
-    String name = "Kaptain Kunal";
+    int whippedCream = 1;
+    int chocolate = 2;
 
     /**
-     * Increment triggered on plus button. Decrement on minus button. Increase/decrease quantity.
+     * Increment called by plus button. Increase quantity.
      */
     public void increment(View view) {
-        quantity += 1;
-        displayQuantity(quantity);
-        displayPrice(calculateTotal(quantity, price));
+        if (quantity <= 100) {
+            quantity += 1;
+            displayQuantity(quantity);
+            displayPrice(calculateTotal(quantity, price));
+        }
+    }
 
-    }
+    /**
+     * Decrement called by minus button. Decreases quantity.
+     */
     public void decrement(View view) {
-        quantity -= 1;
-        displayQuantity(quantity);
+        if (quantity >= 1) {
+            quantity -= 1;
+            displayQuantity(quantity);
+            displayPrice(calculateTotal(quantity, price));
+        }
+    }
+
+    /**
+     * Recalculates and displays new price when checkboxes are checked/unchecked.
+     */
+    public void checkUpdate(View view) {
         displayPrice(calculateTotal(quantity, price));
     }
+
+    /**
+     * Determines total price from quantity, price, and whether checkboxes are checked.
+     */
 
     private int calculateTotal(int quantity, int price) {
-
+        CheckBox chocolateCheck = (CheckBox) findViewById(R.id.chocolate);
+        CheckBox whippedCheck = (CheckBox) findViewById(R.id.whipped);
+        if (chocolateCheck.isChecked()) {
+            price += chocolate;
+        }
+        if (whippedCheck.isChecked()) {
+            price += whippedCream;
+        }
         return quantity * price;
     }
 
     /**
-     * Triggers thank you message.
+     * Called by submit order button.
      */
-
     public void submitOrder(View view) {
         /**
          * Checks if user wants whipped cream.
@@ -75,13 +99,19 @@ public class MainActivity extends AppCompatActivity {
         EditText name = ((EditText) findViewById(R.id.nameBox));
         String nameText = name.getText().toString();
 
-
-
-
+        /**
+         * Calls createMessage. Gives parameters for thank you message.
+         */
 
         TextView messageTextView = (TextView) findViewById(R.id.price_text_view);
-        messageTextView.setText(createMessage(nameText, checkWhipped, checkChocolate, quantity, calculateTotal(price, quantity), getString(R.string.message_checkout)));
+        messageTextView.setText(createMessage(nameText, checkWhipped, checkChocolate, quantity,
+                calculateTotal(quantity, price), getString(R.string.message_checkout)));
     }
+
+    /**
+     * Called when submit order button pushed. Builds and displays thank you message.
+     */
+
     private String createMessage(String name, boolean checkWhipped, boolean checkChocolate, int quantity, int total, String message) {
         return "Name: " + name + "\n" + "Add whipped Cream? " + checkWhipped + "\n" + "Add Chocolate? " + checkChocolate +
         "\n" + "Quantity: " + quantity + "\n" + "Total: $" + total + "\n" + message;
