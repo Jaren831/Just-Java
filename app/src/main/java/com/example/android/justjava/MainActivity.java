@@ -1,6 +1,8 @@
 
 package com.example.android.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Global variables
+     * Global variables. Prices. Defaults quantity on app start.
      */
     int quantity = 2;
     int price = 5;
@@ -103,9 +105,19 @@ public class MainActivity extends AppCompatActivity {
          * Calls createMessage. Gives parameters for thank you message.
          */
 
-        TextView messageTextView = (TextView) findViewById(R.id.price_text_view);
-        messageTextView.setText(createMessage(nameText, checkWhipped, checkChocolate, quantity,
-                calculateTotal(quantity, price), getString(R.string.message_checkout)));
+        String message = createMessage(nameText, checkWhipped, checkChocolate, quantity,
+                calculateTotal(quantity, price), getString(R.string.message_checkout));
+//        TextView messageTextView = (TextView) findViewById(R.id.price_text_view);
+//        messageTextView.setText(message);
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps.
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + nameText);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+
     }
 
     /**
@@ -131,5 +143,7 @@ public class MainActivity extends AppCompatActivity {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
+
+
 
 }
