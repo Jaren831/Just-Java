@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int calculateTotal(int quantity, int price) {
+
         return quantity * price;
     }
 
@@ -54,12 +57,34 @@ public class MainActivity extends AppCompatActivity {
      */
 
     public void submitOrder(View view) {
+        /**
+         * Checks if user wants whipped cream.
+         */
+        CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped);
+        boolean checkWhipped = whippedCreamCheckBox.isChecked();
+
+        /**
+         * Checks if user wants chocolate.
+         */
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate);
+        boolean checkChocolate = chocolateCheckBox.isChecked();
+
+        /**
+         * Checks for user's name.
+         */
+        EditText name = ((EditText) findViewById(R.id.nameBox));
+        String nameText = name.getText().toString();
+
+
+
+
+
         TextView messageTextView = (TextView) findViewById(R.id.price_text_view);
-        messageTextView.setText(createMessage(name, quantity, calculateTotal(price, quantity), getString(R.string.message_checkout)));
+        messageTextView.setText(createMessage(nameText, checkWhipped, checkChocolate, quantity, calculateTotal(price, quantity), getString(R.string.message_checkout)));
     }
-    private String createMessage(String name, int quantity, int total, String message) {
-        return "Name: " + name + "\n" + "Quantity: " + quantity + "\n" + "Total: $" + total + "\n" +
-                message;
+    private String createMessage(String name, boolean checkWhipped, boolean checkChocolate, int quantity, int total, String message) {
+        return "Name: " + name + "\n" + "Add whipped Cream? " + checkWhipped + "\n" + "Add Chocolate? " + checkChocolate +
+        "\n" + "Quantity: " + quantity + "\n" + "Total: $" + total + "\n" + message;
     }
 
     /**

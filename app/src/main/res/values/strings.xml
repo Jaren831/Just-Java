@@ -10,4 +10,8 @@
     <string name="order">Order</string>
     <string name="message_start">Yum coffee</string>
     <string name="message_checkout">Thank you!</string>
+    <string name="Toppings">TOPPINGS</string>
+    <string name="Whipped">Whipped Cream</string>
+    <string name="Chocolate">Chocolate</string>
+    <string name="hint">Name</string>
 </resources>
