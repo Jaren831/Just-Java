@@ -27,15 +27,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Global variables. Prices. Defaults quantity on app start.
+     * Global variables. Prices for coffee and toppings. Default quantity on app start.
      */
+
     int quantity = 2;
     int price = 5;
     int whippedCream = 1;
     int chocolate = 2;
 
     /**
-     * Increment called by plus button. Increase quantity.
+     * Called by plus button. Increases quantity.
      */
     public void increment(View view) {
         if (quantity <= 100) {
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Decrement called by minus button. Decreases quantity.
+     * Called by minus button. Decreases quantity.
      */
     public void decrement(View view) {
         if (quantity >= 1) {
@@ -57,14 +58,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Recalculates and displays new price when checkboxes are checked/unchecked.
+     * Called when box checked/unchecked. Calls displayprice(calculateTotal()) to display
+     * recalculated price.
      */
     public void checkUpdate(View view) {
         displayPrice(calculateTotal(quantity, price));
     }
 
     /**
-     * Determines total price from quantity, price, and whether checkboxes are checked.
+     * Determines total price from quantity, price, and whether checkboxes are checked. Returns
+     * calculated total price.
      */
 
     private int calculateTotal(int quantity, int price) {
@@ -102,17 +105,20 @@ public class MainActivity extends AppCompatActivity {
         String nameText = name.getText().toString();
 
         /**
-         * Calls createMessage. Gives parameters for thank you message.
+         * Calls createMessage. Gives inputs to createMessage. Determines what is in order summary
+         * message.
          */
 
         String message = createMessage(nameText, checkWhipped, checkChocolate, quantity,
-                calculateTotal(quantity, price), getString(R.string.message_checkout));
-//        TextView messageTextView = (TextView) findViewById(R.id.price_text_view);
-//        messageTextView.setText(message);
+                calculateTotal(quantity, price), getString(R.string.thank_you_message));
+        String subject = getString(R.string.email_subject);
 
+        /**
+         * Displays order summary in email upon clicking submit order.
+         */
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps.
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + nameText);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject + nameText);
         intent.putExtra(Intent.EXTRA_TEXT, message);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
@@ -121,27 +127,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Called when submit order button pushed. Builds and displays thank you message.
+     * Called when submit order button pushed. Builds and returns order summary message.
      */
 
-    private String createMessage(String name, boolean checkWhipped, boolean checkChocolate, int quantity, int total, String message) {
-        return "Name: " + name + "\n" + "Add whipped Cream? " + checkWhipped + "\n" + "Add Chocolate? " + checkChocolate +
-        "\n" + "Quantity: " + quantity + "\n" + "Total: $" + total + "\n" + message;
+    private String createMessage(String name, boolean checkWhipped, boolean checkChocolate,
+                                 int quantity, int total, String message) {
+        String checkOutMessage = getString(R.string.order_summary_name, name);
+        checkOutMessage += "\n" + getString(R.string.cream_query) + checkWhipped;
+        checkOutMessage += "\n" + getString(R.string.chocolate_query) + checkChocolate;
+        checkOutMessage += "\n" + getString(R.string.quantityCheckout) + quantity;
+        checkOutMessage += "\n" + getString(R.string.total) +
+                NumberFormat.getCurrencyInstance().format(total);
+        checkOutMessage += "\n" + message;
+        return checkOutMessage;
+
+//        return "Name: " + name + "\n" + "Add whipped Cream? " + checkWhipped + "\n" + "Add Chocolate? " + checkChocolate +
+//        "\n" + "Quantity: " + quantity + "\n" + "Total: $" + total + "\n" + message;
     }
 
     /**
-     * This method displays the desired quantity value on the screen.
+     * This method displays the desired quantity value.
      */
     private void displayQuantity(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         quantityTextView.setText(String.valueOf(number));
     }
     /**
-     * This method displays the desired price on the screen.
+     * This method displays Total: + desired price.
      */
     private void displayPrice(int number) {
+        String total = getString(R.string.total) + NumberFormat.getCurrencyInstance().format(number);
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+        priceTextView.setText(total);
     }
 
 

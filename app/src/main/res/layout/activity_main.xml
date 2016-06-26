@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Toppings"
+            android:textAllCaps="true"
             android:textSize="@dimen/text_size"
             android:layout_marginBottom="@dimen/margin_separation"/>
         <CheckBox
@@ -109,7 +110,7 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/order"
+            android:text="@string/order_button"
             android:textSize="@dimen/text_size"
             android:textAllCaps="true"
             android:onClick="submitOrder"/>
